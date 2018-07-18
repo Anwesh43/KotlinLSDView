@@ -172,4 +172,27 @@ class LSDView(ctx : Context) : View(ctx) {
             curr.startUpdating(startcb)
         }
     }
+
+    data class Renderer(var view : LSDView) {
+
+        val lsd : LinkedDecreasingStep = LinkedDecreasingStep(0)
+
+        val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            lsd.draw(canvas, paint)
+            animator.animate {
+                lsd.update {j, scale ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lsd.startUpdating {
+                animator.stop()
+            }
+        }
+    }
 }
