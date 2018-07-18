@@ -124,7 +124,15 @@ class LSDView(ctx : Context) : View(ctx) {
         }
 
         fun draw(canvas : Canvas, paint : Paint) {
-            canvas.drawStepNode(i, state.scale, paint)
+            canvas.drawAtMide {
+                canvas.save()
+                canvas.scale(-1f, -1f)
+                canvas.save()
+                canvas.translate(-canvas.width.toFloat()/2, -canvas.height.toFloat()/2)
+                canvas.drawStepNode(i, state.scale, paint)
+                canvas.restore()
+                canvas.restore()
+            }
             next?.draw(canvas, paint)
         }
 
