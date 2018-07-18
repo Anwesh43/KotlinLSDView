@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.lsdview
  * Created by anweshmishra on 18/07/18.
  */
 
+import android.app.Activity
 import android.graphics.Paint
 import android.graphics.Canvas
 import android.view.View
@@ -195,6 +196,14 @@ class LSDView(ctx : Context) : View(ctx) {
             lsd.startUpdating {
                 animator.stop()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity)  : LSDView {
+            val view : LSDView = LSDView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
