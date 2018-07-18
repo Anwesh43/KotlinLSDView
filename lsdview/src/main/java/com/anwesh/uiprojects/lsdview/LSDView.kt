@@ -102,4 +102,50 @@ class LSDView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class LSDNode(var i : Int, val state : State = State()) {
+
+        private var next : LSDNode? = null
+
+        private var prev : LSDNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = LSDNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawAtMide {
+                canvas.drawStepNode(i, state.scale, paint)
+            }
+        }
+
+        fun update(stopcb : (Int, Float) -> Unit) {
+            state.update {
+                stopcb(i, it)
+            }
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : LSDNode {
+            var curr : LSDNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr 
+            }
+            cb()
+            return this
+        }
+    }
 }
