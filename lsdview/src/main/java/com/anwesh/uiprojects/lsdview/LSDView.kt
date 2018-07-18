@@ -31,7 +31,7 @@ fun Canvas.drawStepNode(i : Int, scale : Float, paint : Paint) {
     val sc1 : Float = Math.min(0.5f, scale) * 2
     val sc2 : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
     save()
-    translate(0.05f * w + i * gap, -0.05f * h - i * gap)
+    translate(0.05f * w + i * gap, 0.95f * h - i * gap)
     val x : Float = gap * sc2
     val y : Float = -gap * sc1
     drawLine(x, y, x, -gap, paint)
@@ -124,9 +124,8 @@ class LSDView(ctx : Context) : View(ctx) {
         }
 
         fun draw(canvas : Canvas, paint : Paint) {
-            canvas.drawAtMide {
-                canvas.drawStepNode(i, state.scale, paint)
-            }
+            canvas.drawStepNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
         }
 
         fun update(stopcb : (Int, Float) -> Unit) {
@@ -194,7 +193,7 @@ class LSDView(ctx : Context) : View(ctx) {
 
         fun handleTap() {
             lsd.startUpdating {
-                animator.stop()
+                animator.start()
             }
         }
     }
