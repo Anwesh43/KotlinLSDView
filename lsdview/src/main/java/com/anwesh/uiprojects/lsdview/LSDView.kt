@@ -9,6 +9,34 @@ import android.graphics.Canvas
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
+import android.graphics.Color
+
+val nodes : Int = 5
+
+fun Canvas.drawAtMide(cb : () -> Unit) {
+    save()
+    translate(width.toFloat()/2, height.toFloat()/2)
+    cb()
+    restore()
+}
+
+fun Canvas.drawStepNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.strokeWidth = Math.min(w, h) / 60
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.color = Color.parseColor("#16a085")
+    val gap : Float = (Math.min(w, h) * 0.9f) / nodes
+    val sc1 : Float = Math.min(0.5f, scale) * 2
+    val sc2 : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
+    save()
+    translate(0.05f * w + i * gap, -0.05f * h - i * gap)
+    val x : Float = gap * sc2
+    val y : Float = -gap * sc1
+    drawLine(x, y, x, -gap, paint)
+    drawLine(x, -gap, gap, -gap, paint)
+    restore()
+}
 
 class LSDView(ctx : Context) : View(ctx) {
 
